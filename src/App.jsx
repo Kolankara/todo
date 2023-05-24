@@ -1,25 +1,51 @@
+import React,{useEffect, useState} from 'react';
+import Container from 'react-bootstrap/Container';
+import Table from 'react-bootstrap/Table';
 
 
+export default function App() {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [todo,setTodo] =useState([]);
+
+  const getData =async ()=> {
+    const data = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const jsonData = await data.json();
+    setTodo(jsonData)
+  }
+
+  useEffect(()=>{
+    getData();
+  },[])
+ return(
+  <div>
+    <Container className='mt-5 pt-5'>
+      <h1 className='text-center mb-5'>Todo List</h1>
+
+      <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Completed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {todo.map((item,index)=> (
+          <tr key={index}>
+            <td><input type="checkbox" checked={item.completed}/></td>
+          <td>{item.id}</td>
+          <td>{item.title}</td>
+          <td>{item.completed?"completed":"pending"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+    </Container>
+  </div>
+ )
 }
+  
 
-export default App;
+
+
+
