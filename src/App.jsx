@@ -1,51 +1,51 @@
-import React,{useEffect, useState} from 'react';
-import Container from 'react-bootstrap/Container';
-import Table from 'react-bootstrap/Table';
+import Container from "react-bootstrap/Container";
+import { useForm } from "react-hook-form";
 
 
 export default function App() {
-
-  const [todo,setTodo] =useState([]);
-
-  const getData =async ()=> {
-    const data = await fetch('https://jsonplaceholder.typicode.com/todos');
-    const jsonData = await data.json();
-    setTodo(jsonData)
-  }
-
-  useEffect(()=>{
-    getData();
-  },[])
- return(
-  <div>
-    <Container className='mt-5 pt-5'>
-      <h1 className='text-center mb-5'>Todo List</h1>
-
-      <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Completed</th>
-        </tr>
-      </thead>
-      <tbody>
-        {todo.map((item,index)=> (
-          <tr key={index}>
-            <td><input type="checkbox" checked={item.completed}/></td>
-          <td>{item.id}</td>
-          <td>{item.title}</td>
-          <td>{item.completed?"completed":"pending"}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-    </Container>
-  </div>
- )
-}
   
 
 
+  const { register, handleSubmit } = useForm();
+  const onFormSubmit  = data => console.log(data);
+  const onErrors = errors => console.error(errors);
 
+
+
+
+  return (
+    <div>
+      <Container className="mt-5 pt-5">
+        <h1 className="text-center mb-5">Form</h1>
+
+
+<form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
+    
+  <label className="mb-5" htmlFor="">Name</label>
+  <input type="text" name="name" {...register('name',{ required: "name is required" })} id="" />
+  <br />
+  <label className="mb-5" htmlFor="">Address</label>
+  <input type="text" name="address" {...register('address',{ required: "address is required" })} id="" />
+  <br />
+  <label className="mb-5" htmlFor="">Place</label>
+  <input type="text" name="place" {...register('place',{ required: "place is required" })} id="" />
+  <br />
+  <label className="mb-5" htmlFor="">Contact number</label>
+  <input type="phone" name="contact number" {...register('contact number',{ required: "contact number is required" })} id="" />
+  <br />
+  <label className="mb-5" htmlFor="">College</label>
+  <input type="text" name="college" {...register('college',{ required: "college is required" })} id="" />
+  <br />
+   <button className="mb-5" type="submit">Submit</button>
+</form>
+
+
+
+
+
+
+      </Container>
+    </div>
+  );
+}
 
